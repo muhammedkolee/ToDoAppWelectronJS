@@ -3,15 +3,19 @@ const electron = require("electron");
 const path = require("path");
 const url = require("url");
 const fs = require("fs");
+const os = require("os");
 const Database = require("better-sqlite3");
 const { app, BrowserWindow, Menu, ipcMain } = electron;
+
+if (require('electron-squirrel-startup')) app.quit();
 
 // ToDo'ları kaydedebilmek için gerekli değişkenlerin oluşturulması.
 // const kayitlar = fs.readFileSync("kayitlar.json", "utf-8");
 // const ListToDo = JSON.parse(kayitlar);
 
 // Database sınıfından obje oluşturma.
-const db = Database("kayitlar.db");
+const dbPath = path.join(os.homedir(), "AppData", "Roaming", "todoappwelectron", "kayitlar.db");
+const db = Database(dbPath);
 
 db.prepare(`
     create table if not exists todos(
@@ -99,7 +103,7 @@ app.on("ready", () => {
 
     // Uygulamadan çıkış.
     mainWindow.on("close", () => {
-        // db.close();
+        db.close();
         app.quit();
     });
 })

@@ -3,20 +3,68 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
   "keywords": [
     "ToDo",
     "ToDoApp"
-  ],  
-  "author": "Muhammed Köle",
+  ],
+  "author": "Muhammed Kole",
   "license": "ISC",
   "description": "I made an ToDo Application with ElectronJS and SQLite",
   "devDependencies": {
+    "@electron-forge/cli": "^7.7.0",
+    "@electron-forge/maker-deb": "^7.7.0",
+    "@electron-forge/maker-rpm": "^7.7.0",
+    "@electron-forge/maker-squirrel": "^7.7.0",
+    "@electron-forge/maker-wix": "^7.7.0",
+    "@electron-forge/maker-zip": "^7.7.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.7.0",
+    "@electron-forge/plugin-fuses": "^7.7.0",
+    "@electron-forge/publisher-s3": "^7.7.0",
+    "@electron/fuses": "^1.8.0",
     "electron": "^34.3.0"
   },
   "dependencies": {
     "better-sqlite3": "^11.8.1",
-    "electron-rebuild": "^3.2.9"
+    "electron-rebuild": "^3.2.9",
+    "electron-squirrel-startup": "^1.0.1"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "assets/icon.ico"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "ToDoApp"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-wix",
+          "config": {
+            "language": 1055
+          }
+        }
+      ],
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-s3",
+          "platforms": [
+            "windows",
+            "linux"
+          ],
+          "config": {
+            "bucket": "my-bucket",
+            "folder": "my/key/prefix"
+          }
+        }
+      ]
+    }
   }
 }
